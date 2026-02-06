@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatuPay - Visual Flow Diagram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+
+        .flow-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: #f7fafc;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .step-icon {
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin: -10px 0;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .component-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .component-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .component-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .component-list li {
+            padding: 8px 0;
+            color: #4a5568;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .component-list li:last-child {
+            border-bottom: none;
+        }
+
+        .component-list li:before {
+            content: "✓";
+            color: #48bb78;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .mvp-section {
+            background: #f0fff4;
+            border: 3px solid #48bb78;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .mvp-title {
+            color: #22543d;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mvp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .mvp-column h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .included {
+            color: #22543d;
+        }
+
+        .excluded {
+            color: #742a2a;
+        }
+
+        .mvp-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mvp-list li {
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .mvp-list.included-list li {
+            background: white;
+            border-left: 4px solid #48bb78;
+        }
+
+        .mvp-list.excluded-list li {
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+        }
+
+        .tech-stack {
+            background: #ebf8ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .tech-stack h2 {
+            color: #2c5282;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: #2c5282;
+        }
+
+        @media (max-width: 768px) {
+            .mvp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 MatuPay</h1>
+        <div class="subtitle">WhatsApp Commerce Trust Layer for Kenya</div>
+
+        <!-- Main Process Flow -->
+        <div class="flow-section">
+            <div class="section-title">📱 How MatuPay Works (User Journey)</div>
+
+            <div class="process-flow">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Seller Posts Product</div>
+                        <div class="step-description">
+                            Sarah posts a blue dress on Instagram story: "New collection! DM to order"<br>
+                            <strong>Platform:</strong> Instagram/WhatsApp (seller's existing channels)
+                        </div>
+                    </div>
+                    <div class="step-icon">📸</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Buyer Sends Inquiry</div>
+                        <div class="step-description">
+                            Jane sees the dress and sends: "Nataka dress ya blue, size M"<br>
+                            <strong>Channel:</strong> WhatsApp DM to seller's business number
+                        </div>
+                    </div>
+                    <div class="step-icon">💬</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">MatuPay Bot Intercepts</div>
+                        <div class="step-description">
+                            Instead of Sarah responding manually, MatuPay WhatsApp bot replies instantly:<br>
+                            "✅ Order Confirmation: Blue Dress (Size M) - 2,500 KES<br>
+                            Seller: Sarah's Boutique ⭐⭐⭐⭐⭐ (127 sales)<br>
+                            Reply CONFIRM to pay via M-Pesa"
+                        </div>
+                    </div>
+                    <div class="step-icon">🤖</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Payment via M-Pesa</div>
+                        <div class="step-description">
+                            Jane replies "CONFIRM" → M-Pesa STK Push notification appears on her phone<br>
+                            She enters PIN → Payment of 2,500 KES sent to MatuPay escrow account<br>
+                            <strong>Key:</strong> Money is NOT sent directly to seller yet!
+                        </div>
+                    </div>
+                    <div class="step-icon">💳</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Escrow Hold + Notifications</div>
+                        <div class="step-description">
+                            <strong>Buyer (Jane) sees:</strong> "✅ Payment confirmed! Order #MP-156. Money held safely
+                            in escrow."<br>
+                            <strong>Seller (Sarah) sees:</strong> "🎉 New Order! #MP-156 - Blue Dress - 2,500 KES (in
+                            escrow). Package and deliver."
+                        </div>
+                    </div>
+                    <div class="step-icon">🔒</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <div class="step-title">Seller Ships Item</div>
+                        <div class="step-description">
+                            Sarah packages the blue dress (size M) and delivers via courier or hand delivery<br>
+                            She marks order as "Shipped" in her dashboard
+                        </div>
+                    </div>
+                    <div class="step-icon">📦</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <div class="step-title">Buyer Inspects & Confirms</div>
+                        <div class="step-description">
+                            Jane receives dress and checks: ✓ Correct color ✓ Correct size ✓ Good condition<br>
+                            She replies to WhatsApp bot: "RECEIVED"<br>
+                            <strong>If problem:</strong> She can reply "DISPUTE" and upload photos
+                        </div>
+                    </div>
+                    <div class="step-icon">👀</div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">8</div>
+                    <div class="step-content">
+                        <div class="step-title">Payment Released to Seller</div>
+                        <div class="step-description">
+                            MatuPay releases payment from escrow:<br>
+                            Total: 2,500 KES → Platform fee (2%): 50 KES → Seller receives: 2,450 KES<br>
+                            Money transferred to Sarah's M-Pesa instantly!<br>
+                            <strong>Auto-release:</strong> If Jane doesn't respond in 24 hours, payment auto-releases
+                        </div>
+                    </div>
+                    <div class="step-icon">💰</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Components -->
+        <div class="flow-section">
+            <div class="section-title">🏗️ System Components</div>
+
+            <div class="components-grid">
+                <div class="component-card">
+                    <div class="component-title">
+                        <span>📱</span> WhatsApp Bot
+                    </div>
+                    <ul class="component-list">
+                        <li>Receives buyer inquiries</li>
+                        <li>Sends order confirmations</li>
+                        <li>Triggers M-Pesa payments</li>
+                        <li>Handles delivery confirmations</li>
+                        <li>Manages disputes</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">
+                        <span>💳</span> M-Pesa Integration
+                    </div>
+                    <ul class="component-list">
+                        <li>STK Push (payment requests)</li>
+                        <li>Payment callbacks</li>
+                        <li>B2C payouts to sellers</li>
+                        <li>Refunds to buyers</li>
+                        <li>Transaction tracking</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">
+                        <span>🔒</span> Escrow System
+                    </div>
+                    <ul class="component-list">
+                        <li>Hold payments securely</li>
+                        <li>24-hour auto-release timer</li>
+                        <li>Manual release on confirmation</li>
+                        <li>Refund processing</li>
+                        <li>Fee calculation (2%)</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">
+                        <span>🖥️</span> Seller Dashboard (Web)
+                    </div>
+                    <ul class="component-list">
+                        <li>View all orders</li>
+                        <li>Track payments</li>
+                        <li>Mark orders as shipped</li>
+                        <li>Manage disputes</li>
+                        <li>View earnings & analytics</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">
+                        <span>⚖️</span> Dispute Resolution
+                    </div>
+                    <ul class="component-list">
+                        <li>Photo evidence upload</li>
+                        <li>Automated decision (AI)</li>
+                        <li>Manual admin review</li>
+                        <li>6-hour evidence deadline</li>
+                        <li>Partial refunds option</li>
+                    </ul>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">
+                        <span>⚙️</span> Background Tasks
+                    </div>
+                    <ul class="component-list">
+                        <li>Auto-release scheduler</li>
+                        <li>Dispute deadline checker</li>
+                        <li>Daily seller reports</li>
+                        <li>SMS notifications</li>
+                        <li>Analytics aggregation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- MVP Definition -->
+        <div class="mvp-section">
+            <h2 class="mvp-title">🎯 MVP - First 3 Months (What We're Building)</h2>
+
+            <div class="mvp-grid">
+                <div>
+                    <h3 class="included">✅ INCLUDED in MVP</h3>
+                    <ul class="mvp-list included-list">
+                        <li><strong>WhatsApp Bot:</strong> Order intake + payment prompts</li>
+                        <li><strong>M-Pesa STK Push:</strong> Payment collection</li>
+                        <li><strong>Escrow System:</strong> Hold → Release → Payout</li>
+                        <li><strong>Auto-release:</strong> 24-hour timer</li>
+                        <li><strong>Basic Disputes:</strong> Photo upload + manual review</li>
+                        <li><strong>Seller Web Dashboard:</strong> View orders, track payments</li>
+                        <li><strong>Seller Ratings:</strong> Display on order confirmation</li>
+                        <li><strong>Admin Panel:</strong> Manage disputes, view transactions</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="excluded">❌ NOT in MVP (Future)</h3>
+                    <ul class="mvp-list excluded-list">
+                        <li><strong>Flutter Mobile App:</strong> Web dashboard only for now</li>
+                        <li><strong>Inventory Management:</strong> Product catalog system</li>
+                        <li><strong>Delivery Tracking:</strong> Courier API integration</li>
+                        <li><strong>Advanced Analytics:</strong> Sales forecasting, trends</li>
+                        <li><strong>Marketing Tools:</strong> Auto-post to Instagram</li>
+                        <li><strong>Buy Now Pay Later:</strong> Financing options</li>
+                        <li><strong>Multi-seller Orders:</strong> Cart with multiple vendors</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: white; border-radius: 10px;">
+                <strong style="font-size: 1.3em; color: #22543d;">MVP Success Criteria:</strong><br>
+                <span style="color: #4a5568; font-size: 1.1em;">10 active sellers processing 50+ orders with &lt;5%
+                    dispute rate</span>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="tech-stack">
+            <h2>🛠️ Technology Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-item">Django 5.0<br><small>(Backend)</small></div>
+                <div class="tech-item">PostgreSQL 16<br><small>(Database)</small></div>
+                <div class="tech-item">Redis 7.0<br><small>(Cache + Queue)</small></div>
+                <div class="tech-item">Celery<br><small>(Background Jobs)</small></div>
+                <div class="tech-item">WhatsApp Business API<br><small>(Messaging)</small></div>
+                <div class="tech-item">M-Pesa Daraja<br><small>(Payments)</small></div>
+                <div class="tech-item">HTML/CSS/JS<br><small>(Seller Dashboard)</small></div>
+                <div class="tech-item">DigitalOcean<br><small>(Hosting)</small></div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="flow-section" style="margin-top: 40px;">
+            <div class="section-title">📅 3-Month Timeline</div>
+
+            <div style="background: #f7fafc; padding: 30px; border-radius: 15px;">
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #2d3748; margin-bottom: 15px;">Month 1: Core Platform</h3>
+                    <ul style="color: #4a5568; line-height: 2;">
+                        <li>✓ Django backend + PostgreSQL setup</li>
+                        <li>✓ WhatsApp Business API integration</li>
+                        <li>✓ M-Pesa STK Push working</li>
+                        <li>✓ Basic order flow (inquiry → payment → order created)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #2d3748; margin-bottom: 15px;">Month 2: Escrow & Disputes</h3>
+                    <ul style="color: #4a5568; line-height: 2;">
+                        <li>✓ Escrow hold/release system</li>
+                        <li>✓ 24-hour auto-release Celery task</li>
+                        <li>✓ Dispute creation + evidence upload</li>
+                        <li>✓ Seller web dashboard (basic version)</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 style="color: #2d3748; margin-bottom: 15px;">Month 3: Testing & Launch</h3>
+                    <ul style="color: #4a5568; line-height: 2;">
+                        <li>✓ Beta with 10 Instagram sellers</li>
+                        <li>✓ Process 50+ real orders</li>
+                        <li>✓ Bug fixes & improvements</li>
+                        <li>✓ Production deployment → September 2026</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
