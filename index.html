@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MatuPay - Visual Flow Diagram</title>
+    <title>MatuPay - WhatsApp Commerce Trust Layer</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
             min-height: 100vh;
+            color: #333;
         }
 
         .container {
@@ -26,70 +27,233 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(#667eea22 2px, transparent 2px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
-            text-align: center;
-            color: #2d3748;
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             margin-bottom: 10px;
-            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 4em;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .subtitle {
-            text-align: center;
-            color: #718096;
-            margin-bottom: 40px;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+
+        .tagline {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .social-platforms {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .platform-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #444;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .platform-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .flow-section {
             margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
         }
 
         .section-title {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            font-size: 1.5em;
+            padding: 18px 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            font-size: 1.6em;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
         }
 
         .process-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
+            z-index: 0;
         }
 
         .step {
             display: flex;
             align-items: center;
-            gap: 20px;
-            padding: 25px;
-            background: #f7fafc;
+            gap: 25px;
+            padding: 30px;
+            background: white;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
-            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaeaea;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .step.active {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .step:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+
+        .step-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover .step-image {
+            transform: scale(1.05);
         }
 
         .step-number {
-            min-width: 50px;
-            height: 50px;
+            min-width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: bold;
             flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            position: relative;
+        }
+
+        .step-number::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            left: 25px;
+            top: 25px;
+            z-index: 0;
+            opacity: 0.2;
         }
 
         .step-content {
@@ -97,58 +261,132 @@
         }
 
         .step-title {
-            font-size: 1.3em;
+            font-size: 1.5em;
             font-weight: bold;
             color: #2d3748;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .step-description {
             color: #4a5568;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 1.05em;
         }
 
-        .step-icon {
-            font-size: 2em;
-            flex-shrink: 0;
+        .platform-tag {
+            display: inline-block;
+            background: #e6f7ff;
+            color: #1890ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px 8px 5px 0;
+            font-weight: 600;
         }
 
-        .arrow {
-            text-align: center;
-            font-size: 2em;
-            color: #667eea;
-            margin: -10px 0;
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 60px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            border-radius: 5px;
+            transition: width 1.5s ease;
+        }
+
+        .progress-dot {
+            width: 20px;
+            height: 20px;
+            background: #adb5bd;
+            border-radius: 50%;
+            position: absolute;
+            top: -5px;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: #667eea;
+            box-shadow: 0 0 0 8px rgba(102, 126, 234, 0.2);
         }
 
         .components-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
             margin-top: 30px;
         }
 
         .component-card {
             background: white;
-            border: 2px solid #e2e8f0;
             border-radius: 15px;
-            padding: 25px;
+            padding: 30px;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .component-card:hover::before {
+            width: 8px;
         }
 
         .component-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
         }
 
         .component-title {
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: bold;
             color: #2d3748;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        .component-icon {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .component-list {
@@ -157,46 +395,63 @@
         }
 
         .component-list li {
-            padding: 8px 0;
+            padding: 10px 0;
             color: #4a5568;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .component-list li:last-child {
-            border-bottom: none;
+            border-bottom: 1px solid #f1f1f1;
+            position: relative;
+            padding-left: 25px;
         }
 
         .component-list li:before {
             content: "✓";
             color: #48bb78;
             font-weight: bold;
-            margin-right: 10px;
+            position: absolute;
+            left: 0;
         }
 
         .mvp-section {
-            background: #f0fff4;
-            border: 3px solid #48bb78;
-            border-radius: 15px;
-            padding: 30px;
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border: 3px solid #38a169;
+            border-radius: 20px;
+            padding: 40px;
             margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mvp-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #38a169;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(56, 161, 105, 0.3);
         }
 
         .mvp-title {
             color: #22543d;
-            font-size: 1.8em;
-            margin-bottom: 20px;
+            font-size: 2em;
+            margin-bottom: 30px;
             text-align: center;
         }
 
         .mvp-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 40px;
         }
 
         .mvp-column h3 {
-            margin-bottom: 15px;
-            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .included {
@@ -213,47 +468,195 @@
         }
 
         .mvp-list li {
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .mvp-list li:hover {
+            transform: translateX(5px);
         }
 
         .mvp-list.included-list li {
-            background: white;
-            border-left: 4px solid #48bb78;
+            background: rgba(56, 161, 105, 0.1);
+            border-left: 4px solid #38a169;
         }
 
         .mvp-list.excluded-list li {
-            background: #fff5f5;
+            background: rgba(252, 129, 129, 0.1);
             border-left: 4px solid #fc8181;
         }
 
         .tech-stack {
-            background: #ebf8ff;
-            border-radius: 15px;
-            padding: 30px;
+            background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
+            border-radius: 20px;
+            padding: 40px;
             margin-top: 40px;
+            text-align: center;
         }
 
         .tech-stack h2 {
             color: #2c5282;
-            margin-bottom: 20px;
-            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
         }
 
         .tech-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
         }
 
         .tech-item {
             background: white;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
             font-weight: bold;
             color: #2c5282;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(44, 82, 130, 0.15);
+            border-color: #667eea;
+        }
+
+        .tech-item small {
+            display: block;
+            margin-top: 5px;
+            font-weight: normal;
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 60px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-item p {
+            opacity: 0.9;
+        }
+
+        .business-showcase {
+            background: linear-gradient(135deg, #fffaf0 0%, #fff5f5 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .business-showcase h2 {
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .business-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .business-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .business-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .business-info {
+            padding: 20px;
+        }
+
+        .business-info h4 {
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .business-type {
+            display: inline-block;
+            background: #e6f7ff;
+            color: #1890ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
@@ -262,12 +665,60 @@
             }
 
             h1 {
-                font-size: 1.8em;
+                font-size: 2.5em;
             }
 
             .step {
                 flex-direction: column;
                 text-align: center;
+            }
+
+            .step-image {
+                width: 100%;
+                max-width: 300px;
+                height: 200px;
+            }
+
+            .progress-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .progress-bar {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .business-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
     </style>
@@ -275,254 +726,142 @@
 
 <body>
     <div class="container">
-        <h1>🚀 MatuPay</h1>
-        <div class="subtitle">WhatsApp Commerce Trust Layer for Kenya</div>
+        <div class="bg-pattern"></div>
+
+        <div class="header">
+            <div class="logo">🚀</div>
+            <h1>MatuPay</h1>
+            <div class="subtitle">WhatsApp Commerce Trust Layer for Kenya – Secure escrow payments for social media
+                businesses across all platforms</div>
+            <div class="tagline">Trusted Payments for Social Commerce</div>
+
+            <div class="social-platforms">
+                <div class="platform-badge">📸 Instagram</div>
+                <div class="platform-badge">📱 WhatsApp</div>
+                <div class="platform-badge">📘 Facebook</div>
+                <div class="platform-badge">🎵 TikTok</div>
+                <div class="platform-badge">🐦 X (Twitter)</div>
+            </div>
+        </div>
+
+        <!-- Business Showcase -->
+        <div class="business-showcase">
+            <h2>🏪 Businesses We Serve</h2>
+            <p style="color: #666; margin-bottom: 20px; max-width: 800px; margin: 0 auto 30px;">MatuPay protects
+                transactions for all types of social media businesses</p>
+
+            <div class="business-grid">
+                <div class="business-card">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Fashion Boutique" class="business-image">
+                    <div class="business-info">
+                        <h4>Sarah's Boutique</h4>
+                        <div class="business-type">👗 Fashion & Clothing</div>
+                        <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Selling dresses & accessories on
+                            Instagram</p>
+                    </div>
+                </div>
+
+                <div class="business-card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Restaurant" class="business-image">
+                    <div class="business-info">
+                        <h4>Nairobi Kitchen</h4>
+                        <div class="business-type">🍕 Food & Restaurant</div>
+                        <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Food delivery via WhatsApp orders
+                        </p>
+                    </div>
+                </div>
+
+                <div class="business-card">
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Electronics" class="business-image">
+                    <div class="business-info">
+                        <h4>Tech Gadgets KE</h4>
+                        <div class="business-type">📱 Electronics</div>
+                        <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Phones & accessories on Facebook
+                            Marketplace</p>
+                    </div>
+                </div>
+
+                <div class="business-card">
+                    <img src="https://images.unsplash.com/photo-1556740738-6ebd2a8ad63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Beauty Products" class="business-image">
+                    <div class="business-info">
+                        <h4>Beauty By Grace</h4>
+                        <div class="business-type">💄 Beauty Products</div>
+                        <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Skincare & cosmetics on TikTok Shop
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div>Journey Start</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-dot" style="left: 0%;" data-step="0"></div>
+                <div class="progress-dot" style="left: 14.28%;" data-step="1"></div>
+                <div class="progress-dot" style="left: 28.56%;" data-step="2"></div>
+                <div class="progress-dot" style="left: 42.84%;" data-step="3"></div>
+                <div class="progress-dot" style="left: 57.12%;" data-step="4"></div>
+                <div class="progress-dot" style="left: 71.4%;" data-step="5"></div>
+                <div class="progress-dot" style="left: 85.68%;" data-step="6"></div>
+                <div class="progress-dot" style="left: 100%;" data-step="7"></div>
+            </div>
+            <div>Payment Complete</div>
+        </div>
 
         <!-- Main Process Flow -->
         <div class="flow-section">
-            <div class="section-title">📱 How MatuPay Works (User Journey)</div>
+            <div class="section-title">
+                <span>📱</span> How MatuPay Works (User Journey)
+            </div>
 
-            <div class="process-flow">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <div class="step-title">Seller Posts Product</div>
-                        <div class="step-description">
-                            Sarah posts a blue dress on Instagram story: "New collection! DM to order"<br>
-                            <strong>Platform:</strong> Instagram/WhatsApp (seller's existing channels)
-                        </div>
-                    </div>
-                    <div class="step-icon">📸</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <div class="step-title">Buyer Sends Inquiry</div>
-                        <div class="step-description">
-                            Jane sees the dress and sends: "Nataka dress ya blue, size M"<br>
-                            <strong>Channel:</strong> WhatsApp DM to seller's business number
-                        </div>
-                    </div>
-                    <div class="step-icon">💬</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <div class="step-title">MatuPay Bot Intercepts</div>
-                        <div class="step-description">
-                            Instead of Sarah responding manually, MatuPay WhatsApp bot replies instantly:<br>
-                            "✅ Order Confirmation: Blue Dress (Size M) - 2,500 KES<br>
-                            Seller: Sarah's Boutique ⭐⭐⭐⭐⭐ (127 sales)<br>
-                            Reply CONFIRM to pay via M-Pesa"
-                        </div>
-                    </div>
-                    <div class="step-icon">🤖</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <div class="step-title">Payment via M-Pesa</div>
-                        <div class="step-description">
-                            Jane replies "CONFIRM" → M-Pesa STK Push notification appears on her phone<br>
-                            She enters PIN → Payment of 2,500 KES sent to MatuPay escrow account<br>
-                            <strong>Key:</strong> Money is NOT sent directly to seller yet!
-                        </div>
-                    </div>
-                    <div class="step-icon">💳</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <div class="step-title">Escrow Hold + Notifications</div>
-                        <div class="step-description">
-                            <strong>Buyer (Jane) sees:</strong> "✅ Payment confirmed! Order #MP-156. Money held safely
-                            in escrow."<br>
-                            <strong>Seller (Sarah) sees:</strong> "🎉 New Order! #MP-156 - Blue Dress - 2,500 KES (in
-                            escrow). Package and deliver."
-                        </div>
-                    </div>
-                    <div class="step-icon">🔒</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <div class="step-title">Seller Ships Item</div>
-                        <div class="step-description">
-                            Sarah packages the blue dress (size M) and delivers via courier or hand delivery<br>
-                            She marks order as "Shipped" in her dashboard
-                        </div>
-                    </div>
-                    <div class="step-icon">📦</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">7</div>
-                    <div class="step-content">
-                        <div class="step-title">Buyer Inspects & Confirms</div>
-                        <div class="step-description">
-                            Jane receives dress and checks: ✓ Correct color ✓ Correct size ✓ Good condition<br>
-                            She replies to WhatsApp bot: "RECEIVED"<br>
-                            <strong>If problem:</strong> She can reply "DISPUTE" and upload photos
-                        </div>
-                    </div>
-                    <div class="step-icon">👀</div>
-                </div>
-
-                <div class="arrow">↓</div>
-
-                <div class="step">
-                    <div class="step-number">8</div>
-                    <div class="step-content">
-                        <div class="step-title">Payment Released to Seller</div>
-                        <div class="step-description">
-                            MatuPay releases payment from escrow:<br>
-                            Total: 2,500 KES → Platform fee (2%): 50 KES → Seller receives: 2,450 KES<br>
-                            Money transferred to Sarah's M-Pesa instantly!<br>
-                            <strong>Auto-release:</strong> If Jane doesn't respond in 24 hours, payment auto-releases
-                        </div>
-                    </div>
-                    <div class="step-icon">💰</div>
-                </div>
+            <div class="timeline"></div>
+            <div class="process-flow" id="processFlow">
+                <!-- Steps will be populated by JavaScript -->
             </div>
         </div>
 
         <!-- System Components -->
         <div class="flow-section">
-            <div class="section-title">🏗️ System Components</div>
+            <div class="section-title">
+                <span>🏗️</span> System Components
+            </div>
 
-            <div class="components-grid">
-                <div class="component-card">
-                    <div class="component-title">
-                        <span>📱</span> WhatsApp Bot
-                    </div>
-                    <ul class="component-list">
-                        <li>Receives buyer inquiries</li>
-                        <li>Sends order confirmations</li>
-                        <li>Triggers M-Pesa payments</li>
-                        <li>Handles delivery confirmations</li>
-                        <li>Manages disputes</li>
-                    </ul>
-                </div>
-
-                <div class="component-card">
-                    <div class="component-title">
-                        <span>💳</span> M-Pesa Integration
-                    </div>
-                    <ul class="component-list">
-                        <li>STK Push (payment requests)</li>
-                        <li>Payment callbacks</li>
-                        <li>B2C payouts to sellers</li>
-                        <li>Refunds to buyers</li>
-                        <li>Transaction tracking</li>
-                    </ul>
-                </div>
-
-                <div class="component-card">
-                    <div class="component-title">
-                        <span>🔒</span> Escrow System
-                    </div>
-                    <ul class="component-list">
-                        <li>Hold payments securely</li>
-                        <li>24-hour auto-release timer</li>
-                        <li>Manual release on confirmation</li>
-                        <li>Refund processing</li>
-                        <li>Fee calculation (2%)</li>
-                    </ul>
-                </div>
-
-                <div class="component-card">
-                    <div class="component-title">
-                        <span>🖥️</span> Seller Dashboard (Web)
-                    </div>
-                    <ul class="component-list">
-                        <li>View all orders</li>
-                        <li>Track payments</li>
-                        <li>Mark orders as shipped</li>
-                        <li>Manage disputes</li>
-                        <li>View earnings & analytics</li>
-                    </ul>
-                </div>
-
-                <div class="component-card">
-                    <div class="component-title">
-                        <span>⚖️</span> Dispute Resolution
-                    </div>
-                    <ul class="component-list">
-                        <li>Photo evidence upload</li>
-                        <li>Automated decision (AI)</li>
-                        <li>Manual admin review</li>
-                        <li>6-hour evidence deadline</li>
-                        <li>Partial refunds option</li>
-                    </ul>
-                </div>
-
-                <div class="component-card">
-                    <div class="component-title">
-                        <span>⚙️</span> Background Tasks
-                    </div>
-                    <ul class="component-list">
-                        <li>Auto-release scheduler</li>
-                        <li>Dispute deadline checker</li>
-                        <li>Daily seller reports</li>
-                        <li>SMS notifications</li>
-                        <li>Analytics aggregation</li>
-                    </ul>
-                </div>
+            <div class="components-grid" id="componentsGrid">
+                <!-- Components will be populated by JavaScript -->
             </div>
         </div>
 
         <!-- MVP Definition -->
         <div class="mvp-section">
+            <div class="mvp-badge">MVP PHASE</div>
             <h2 class="mvp-title">🎯 MVP - First 3 Months (What We're Building)</h2>
 
             <div class="mvp-grid">
                 <div>
                     <h3 class="included">✅ INCLUDED in MVP</h3>
-                    <ul class="mvp-list included-list">
-                        <li><strong>WhatsApp Bot:</strong> Order intake + payment prompts</li>
-                        <li><strong>M-Pesa STK Push:</strong> Payment collection</li>
-                        <li><strong>Escrow System:</strong> Hold → Release → Payout</li>
-                        <li><strong>Auto-release:</strong> 24-hour timer</li>
-                        <li><strong>Basic Disputes:</strong> Photo upload + manual review</li>
-                        <li><strong>Seller Web Dashboard:</strong> View orders, track payments</li>
-                        <li><strong>Seller Ratings:</strong> Display on order confirmation</li>
-                        <li><strong>Admin Panel:</strong> Manage disputes, view transactions</li>
+                    <ul class="mvp-list included-list" id="includedList">
+                        <!-- Included items will be populated by JavaScript -->
                     </ul>
                 </div>
 
                 <div>
                     <h3 class="excluded">❌ NOT in MVP (Future)</h3>
-                    <ul class="mvp-list excluded-list">
-                        <li><strong>Flutter Mobile App:</strong> Web dashboard only for now</li>
-                        <li><strong>Inventory Management:</strong> Product catalog system</li>
-                        <li><strong>Delivery Tracking:</strong> Courier API integration</li>
-                        <li><strong>Advanced Analytics:</strong> Sales forecasting, trends</li>
-                        <li><strong>Marketing Tools:</strong> Auto-post to Instagram</li>
-                        <li><strong>Buy Now Pay Later:</strong> Financing options</li>
-                        <li><strong>Multi-seller Orders:</strong> Cart with multiple vendors</li>
+                    <ul class="mvp-list excluded-list" id="excludedList">
+                        <!-- Excluded items will be populated by JavaScript -->
                     </ul>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 30px; padding: 20px; background: white; border-radius: 10px;">
-                <strong style="font-size: 1.3em; color: #22543d;">MVP Success Criteria:</strong><br>
+            <div
+                style="text-align: center; margin-top: 40px; padding: 25px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                <strong style="font-size: 1.4em; color: #22543d; display: block; margin-bottom: 10px;">🎯 MVP Success
+                    Criteria</strong>
                 <span style="color: #4a5568; font-size: 1.1em;">10 active sellers processing 50+ orders with &lt;5%
                     dispute rate</span>
             </div>
@@ -531,55 +870,399 @@
         <!-- Tech Stack -->
         <div class="tech-stack">
             <h2>🛠️ Technology Stack</h2>
-            <div class="tech-grid">
-                <div class="tech-item">Django 5.0<br><small>(Backend)</small></div>
-                <div class="tech-item">PostgreSQL 16<br><small>(Database)</small></div>
-                <div class="tech-item">Redis 7.0<br><small>(Cache + Queue)</small></div>
-                <div class="tech-item">Celery<br><small>(Background Jobs)</small></div>
-                <div class="tech-item">WhatsApp Business API<br><small>(Messaging)</small></div>
-                <div class="tech-item">M-Pesa Daraja<br><small>(Payments)</small></div>
-                <div class="tech-item">HTML/CSS/JS<br><small>(Seller Dashboard)</small></div>
-                <div class="tech-item">DigitalOcean<br><small>(Hosting)</small></div>
+            <div class="tech-grid" id="techGrid">
+                <!-- Tech items will be populated by JavaScript -->
             </div>
         </div>
 
-        <!-- Timeline -->
-        <div class="flow-section" style="margin-top: 40px;">
-            <div class="section-title">📅 3-Month Timeline</div>
-
-            <div style="background: #f7fafc; padding: 30px; border-radius: 15px;">
-                <div style="margin-bottom: 30px;">
-                    <h3 style="color: #2d3748; margin-bottom: 15px;">Month 1: Core Platform</h3>
-                    <ul style="color: #4a5568; line-height: 2;">
-                        <li>✓ Django backend + PostgreSQL setup</li>
-                        <li>✓ WhatsApp Business API integration</li>
-                        <li>✓ M-Pesa STK Push working</li>
-                        <li>✓ Basic order flow (inquiry → payment → order created)</li>
-                    </ul>
-                </div>
-
-                <div style="margin-bottom: 30px;">
-                    <h3 style="color: #2d3748; margin-bottom: 15px;">Month 2: Escrow & Disputes</h3>
-                    <ul style="color: #4a5568; line-height: 2;">
-                        <li>✓ Escrow hold/release system</li>
-                        <li>✓ 24-hour auto-release Celery task</li>
-                        <li>✓ Dispute creation + evidence upload</li>
-                        <li>✓ Seller web dashboard (basic version)</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 style="color: #2d3748; margin-bottom: 15px;">Month 3: Testing & Launch</h3>
-                    <ul style="color: #4a5568; line-height: 2;">
-                        <li>✓ Beta with 10 Instagram sellers</li>
-                        <li>✓ Process 50+ real orders</li>
-                        <li>✓ Bug fixes & improvements</li>
-                        <li>✓ Production deployment → September 2026</li>
-                    </ul>
-                </div>
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">
+                <h3>24h</h3>
+                <p>Auto-release Timer</p>
             </div>
+            <div class="stat-item">
+                <h3>2%</h3>
+                <p>Platform Fee</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Secure Escrow</p>
+            </div>
+            <div class="stat-item">
+                <h3>6h</h3>
+                <p>Dispute Resolution</p>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn-primary" id="prevBtn">
+                <span>⬅️</span> Previous Step
+            </button>
+            <button class="btn btn-outline" id="resetBtn">
+                <span>🔄</span> Reset Journey
+            </button>
+            <button class="btn btn-primary" id="nextBtn">
+                Next Step <span>➡️</span>
+            </button>
         </div>
     </div>
+
+    <script>
+        // Data for the application with images
+        const stepsData = [
+            {
+                number: 1,
+                icon: "📸",
+                title: "Seller Posts Product",
+                description: "Sarah posts her latest fashion collection on Instagram story: 'New arrivals! DM to order with secure MatuPay escrow'",
+                platforms: ["Instagram", "Facebook", "TikTok"],
+                image: "https://images.unsplash.com/photo-1618519764620-7403abdbdfe9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 2,
+                icon: "💬",
+                title: "Buyer Sends Inquiry",
+                description: "Jane sees the dress and sends WhatsApp message: 'Nataka dress ya blue, size M - MatuPay escrow only'",
+                platforms: ["WhatsApp DM", "Instagram DM", "Facebook Messenger"],
+                image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 3,
+                icon: "🤖",
+                title: "MatuPay Bot Intercepts",
+                description: "MatuPay WhatsApp bot instantly replies with secure order confirmation, seller rating, and escrow payment instructions.",
+                platforms: ["WhatsApp Bot", "Secure Order"],
+                image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 4,
+                icon: "💳",
+                title: "Payment via M-Pesa",
+                description: "Jane replies 'CONFIRM' → M-Pesa STK Push appears → She enters PIN → Payment secured in MatuPay escrow account.",
+                platforms: ["M-Pesa STK Push", "Secure Escrow"],
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 5,
+                icon: "🔒",
+                title: "Escrow Hold + Notifications",
+                description: "Buyer gets payment confirmation. Seller receives order with shipping instructions. Money held safely in escrow.",
+                platforms: ["Escrow System", "Secure Holding"],
+                image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 6,
+                icon: "📦",
+                title: "Seller Ships Item",
+                description: "Sarah packages the dress and delivers via courier. She marks order as 'Shipped' in her MatuPay dashboard.",
+                platforms: ["Seller Dashboard", "Delivery"],
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 7,
+                icon: "👀",
+                title: "Buyer Inspects & Confirms",
+                description: "Jane receives dress, checks quality, and replies 'RECEIVED' to release payment. Or 'DISPUTE' for issues.",
+                platforms: ["Quality Check", "Dispute System"],
+                image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                number: 8,
+                icon: "💰",
+                title: "Payment Released to Seller",
+                description: "MatuPay releases escrow payment to seller's M-Pesa instantly. 2% platform fee deducted. Auto-release after 24 hours.",
+                platforms: ["Escrow Release", "M-Pesa Payout"],
+                image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        const componentsData = [
+            {
+                icon: "📱",
+                title: "WhatsApp Bot",
+                features: [
+                    "Receives buyer inquiries",
+                    "Sends order confirmations",
+                    "Triggers M-Pesa payments",
+                    "Handles delivery confirmations",
+                    "Manages disputes"
+                ]
+            },
+            {
+                icon: "💳",
+                title: "M-Pesa Integration",
+                features: [
+                    "STK Push (payment requests)",
+                    "Payment callbacks",
+                    "B2C payouts to sellers",
+                    "Refunds to buyers",
+                    "Transaction tracking"
+                ]
+            },
+            {
+                icon: "🔒",
+                title: "Escrow System",
+                features: [
+                    "Hold payments securely",
+                    "24-hour auto-release timer",
+                    "Manual release on confirmation",
+                    "Refund processing",
+                    "Fee calculation (2%)"
+                ]
+            },
+            {
+                icon: "🖥️",
+                title: "Seller Dashboard (Web)",
+                features: [
+                    "View all orders",
+                    "Track payments",
+                    "Mark orders as shipped",
+                    "Manage disputes",
+                    "View earnings & analytics"
+                ]
+            },
+            {
+                icon: "⚖️",
+                title: "Dispute Resolution",
+                features: [
+                    "Photo evidence upload",
+                    "Automated decision (AI)",
+                    "Manual admin review",
+                    "6-hour evidence deadline",
+                    "Partial refunds option"
+                ]
+            },
+            {
+                icon: "⚙️",
+                title: "Background Tasks",
+                features: [
+                    "Auto-release scheduler",
+                    "Dispute deadline checker",
+                    "Daily seller reports",
+                    "SMS notifications",
+                    "Analytics aggregation"
+                ]
+            }
+        ];
+
+        const mvpIncluded = [
+            "WhatsApp Bot: Order intake + payment prompts",
+            "M-Pesa STK Push: Payment collection",
+            "Escrow System: Hold → Release → Payout",
+            "Auto-release: 24-hour timer",
+            "Basic Disputes: Photo upload + manual review",
+            "Seller Web Dashboard: View orders, track payments",
+            "Seller Ratings: Display on order confirmation",
+            "Admin Panel: Manage disputes, view transactions"
+        ];
+
+        const mvpExcluded = [
+            "Flutter Mobile App: Web dashboard only for now",
+            "Inventory Management: Product catalog system",
+            "Delivery Tracking: Courier API integration",
+            "Advanced Analytics: Sales forecasting, trends",
+            "Marketing Tools: Auto-post to Instagram",
+            "Buy Now Pay Later: Financing options",
+            "Multi-seller Orders: Cart with multiple vendors"
+        ];
+
+        const techStack = [
+            { name: "Django 5.0", desc: "Backend" },
+            { name: "PostgreSQL 16", desc: "Database" },
+            { name: "Redis 7.0", desc: "Cache + Queue" },
+            { name: "Celery", desc: "Background Jobs" },
+            { name: "WhatsApp Business API", desc: "Messaging" },
+            { name: "M-Pesa Daraja", desc: "Payments" },
+            { name: "HTML/CSS/JS", desc: "Seller Dashboard" },
+            { name: "DigitalOcean", desc: "Hosting" }
+        ];
+
+        // DOM Elements
+        let currentStep = 0;
+        const processFlow = document.getElementById('processFlow');
+        const componentsGrid = document.getElementById('componentsGrid');
+        const includedList = document.getElementById('includedList');
+        const excludedList = document.getElementById('excludedList');
+        const techGrid = document.getElementById('techGrid');
+        const progressFill = document.getElementById('progressFill');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Initialize the application
+        function init() {
+            renderSteps();
+            renderComponents();
+            renderMVP();
+            renderTechStack();
+            updateProgress();
+            setupEventListeners();
+        }
+
+        // Render process steps with images
+        function renderSteps() {
+            processFlow.innerHTML = '';
+
+            stepsData.forEach((step, index) => {
+                const stepEl = document.createElement('div');
+                stepEl.className = `step ${index <= currentStep ? 'active' : ''}`;
+                stepEl.style.animationDelay = `${index * 0.1}s`;
+
+                const platformsHTML = step.platforms.map(platform =>
+                    `<span class="platform-tag">${platform}</span>`
+                ).join('');
+
+                stepEl.innerHTML = `
+                    <div class="step-number">${step.number}</div>
+                    <img src="${step.image}" alt="Step ${step.number}" class="step-image">
+                    <div class="step-content">
+                        <div class="step-title">
+                            ${step.icon} ${step.title}
+                        </div>
+                        <div class="step-description">
+                            ${step.description}
+                            <div style="margin-top: 10px;">${platformsHTML}</div>
+                        </div>
+                    </div>
+                `;
+
+                processFlow.appendChild(stepEl);
+            });
+
+            // Animate steps
+            document.querySelectorAll('.step').forEach((step, index) => {
+                if (index <= currentStep) {
+                    setTimeout(() => {
+                        step.style.animation = 'slideIn 0.5s ease forwards';
+                    }, index * 100);
+                }
+            });
+        }
+
+        // Render system components
+        function renderComponents() {
+            componentsGrid.innerHTML = '';
+
+            componentsData.forEach(component => {
+                const componentEl = document.createElement('div');
+                componentEl.className = 'component-card';
+
+                const featuresHTML = component.features.map(feature =>
+                    `<li>${feature}</li>`
+                ).join('');
+
+                componentEl.innerHTML = `
+                    <div class="component-title">
+                        <span class="component-icon">${component.icon}</span>
+                        ${component.title}
+                    </div>
+                    <ul class="component-list">
+                        ${featuresHTML}
+                    </ul>
+                `;
+
+                componentsGrid.appendChild(componentEl);
+            });
+        }
+
+        // Render MVP lists
+        function renderMVP() {
+            includedList.innerHTML = mvpIncluded.map(item =>
+                `<li>${item}</li>`
+            ).join('');
+
+            excludedList.innerHTML = mvpExcluded.map(item =>
+                `<li>${item}</li>`
+            ).join('');
+        }
+
+        // Render tech stack
+        function renderTechStack() {
+            techGrid.innerHTML = '';
+
+            techStack.forEach(tech => {
+                const techEl = document.createElement('div');
+                techEl.className = 'tech-item';
+                techEl.innerHTML = `
+                    ${tech.name}<br>
+                    <small>${tech.desc}</small>
+                `;
+                techGrid.appendChild(techEl);
+            });
+        }
+
+        // Update progress indicator
+        function updateProgress() {
+            const progressPercentage = (currentStep / (stepsData.length - 1)) * 100;
+            progressFill.style.width = `${progressPercentage}%`;
+
+            progressDots.forEach((dot, index) => {
+                if (index <= currentStep) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            // Update button states
+            prevBtn.disabled = currentStep === 0;
+            nextBtn.disabled = currentStep === stepsData.length - 1;
+        }
+
+        // Navigate to next step
+        function nextStep() {
+            if (currentStep < stepsData.length - 1) {
+                currentStep++;
+                renderSteps();
+                updateProgress();
+            }
+        }
+
+        // Navigate to previous step
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderSteps();
+                updateProgress();
+            }
+        }
+
+        // Reset journey
+        function resetJourney() {
+            currentStep = 0;
+            renderSteps();
+            updateProgress();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            prevBtn.addEventListener('click', prevStep);
+            nextBtn.addEventListener('click', nextStep);
+            resetBtn.addEventListener('click', resetJourney);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') nextStep();
+                if (e.key === 'ArrowLeft') prevStep();
+                if (e.key === 'Home') resetJourney();
+            });
+
+            // Progress dot click navigation
+            progressDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentStep = parseInt(dot.getAttribute('data-step'));
+                    renderSteps();
+                    updateProgress();
+                });
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 
 </html>
